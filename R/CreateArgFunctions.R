@@ -85,6 +85,7 @@ createCreateStudyPopulationArgs <- function(firstExposureOnly = FALSE,
 #' @param prior  The prior used to fit the model. See Cyclops::createPrior() for details.
 #' @param control  The control object used to control the cross-validation used to determine the hyperparameters of the prior (if applicable). See Cyclops::createControl() for details.
 #' @param estimator  The type of estimator for the IPTW. Options are estimator = "ate" for the average treatment effect, estimator = "att" for the average treatment effect in the treated, and estimator = "ato" for the average treatment effect in the overlap population.
+#' @param minFraction  Used within the tidyCovariateData function of Feature extration -> Minimum fraction of the population that should have a non-zero value for a covariate for that covariate to be kept. Set to 0 to don't filter on frequency.
 #'
 #' @export
 createCreatePsArgs <- function(excludeCovariateIds = c(),
@@ -94,7 +95,8 @@ createCreatePsArgs <- function(excludeCovariateIds = c(),
                                stopOnError = TRUE,
                                prior = createPrior("laplace", exclude = c(0), useCrossValidation = TRUE),
                                control = createControl(noiseLevel = "silent", cvType = "auto", seed = 1, resetCoefficients = TRUE, tolerance = 2e-07, cvRepetitions = 10, startingVariance = 0.01),
-                               estimator = "att") {
+                               estimator = "att",
+                               minFraction = 0.001) {
   analysis <- list()
   for (name in names(formals(createCreatePsArgs))) {
     analysis[[name]] <- get(name)
