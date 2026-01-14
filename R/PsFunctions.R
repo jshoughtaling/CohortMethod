@@ -57,6 +57,9 @@
 #'                                 for the average treatment effect, `estimator = "att"` for the
 #'                                 average treatment effect in the treated, and `estimator = "ato"`
 #'                                 for the average treatment effect in the overlap population.
+#' @param minFraction              Used within the tidyCovariateData function of Feature extration 
+#'                                 Minimum fraction of the population that should have a non-zero value 
+#'                                 for a covariate for that covariate to be kept. Set to 0 to not filter on frequency.
 #'
 #' @references
 #' Xu S, Ross C, Raebel MA, Shetterly S, Blanchette C, Smith D. Use of stabilized inverse propensity scores
