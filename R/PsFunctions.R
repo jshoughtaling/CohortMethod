@@ -86,7 +86,8 @@ createPs <- function(cohortMethodData,
                        cvRepetitions = 10,
                        startingVariance = 0.01
                      ),
-                     estimator = "att") {
+                     estimator = "att",
+                     minFraction = 0.001) {
   errorMessages <- checkmate::makeAssertCollection()
   checkmate::assertClass(cohortMethodData, "CohortMethodData", add = errorMessages)
   checkmate::assertDataFrame(population, null.ok = TRUE, add = errorMessages)
@@ -163,7 +164,7 @@ createPs <- function(cohortMethodData,
         length(includeCovariateIds) == 0 &&
         length(excludeCovariateIds) == 0) {
       # No filtering necessary, send to tidyCovariateData:
-      covariateData <- FeatureExtraction::tidyCovariateData(cohortMethodData)
+      covariateData <- FeatureExtraction::tidyCovariateData(cohortMethodData, minFraction = minFraction)
     } else {
       # Need filtering here before sending it to tidyCovariateData:
       covariates <- cohortMethodData$covariates %>%
@@ -186,7 +187,7 @@ createPs <- function(cohortMethodData,
       metaData$populationSize <- nrow(population)
       attr(filteredCovariateData, "metaData") <- metaData
       class(filteredCovariateData) <- "CovariateData"
-      covariateData <- FeatureExtraction::tidyCovariateData(filteredCovariateData)
+      covariateData <- FeatureExtraction::tidyCovariateData(filteredCovariateData, minFraction = minFraction)
       close(filteredCovariateData)
     }
     metaData$deletedInfrequentCovariateIds <- attr(covariateData, "metaData")$deletedInfrequentCovariateIds
